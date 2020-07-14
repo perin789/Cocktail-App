@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Cocktail App</title>
+
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="style.css" />
+        
+    </head>
+
+    <body>
+        <div class="row" id="cocktails" v-cloak>
+            <div class= "col-lg-8">
+                <div class="glow"> 
+                    <!-- Application Title and tagline-->
+                    <div class="container">
+                        <div class="col-lg-8">
+                            <div class="row">
+                            <div>
+                                <h2 class="display-2" >{{ appName }}</h2>
+                                <p class="lead">search for the drink, to fill up your cup </p>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br/>
+                <div class="container">
+                    <div class="row" v-show="!isSearch && !isFetch">
+                        <div class="col-lg">
+                            <input
+                                type = "text"
+                                v-model = "searchWord"
+                                id = "name"
+                                placeholder = "drink name"
+                                class = "form-control"
+                            />
+                            <br/>
+                            <p>
+                                <button @click="searchCocktail" class="btn btn-dark">
+                                    Search
+                                </button>
+                            </p>
+                        </div>      
+                    </div>
+                    <div class="row" v-show="isSearch && !isFetch">
+                        <div class="col-lg" >
+                            <p>
+                                <h4>Search results : {{results}} </h4>
+                            </p>
+                            <div v-show="!exist">
+                                <button @click="searchAgain" class="btn btn-dark">
+                                    Search Again
+                                </button>
+                            </div>
+                            <div>
+                                <p>
+                                    <ul v-for="drink in listOfCocktails" class="list-group">
+                                        <li class="list-group-item" >
+                                            <button @click="fetchCocktail(drink.idDrink)" class="btn btn-light">
+                                                {{drink.strDrink}}
+                                            </button>
+                                        </li>
+                                    </ul>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="container">
+                    <div class = "row" v-show="isFetch">
+                        <div class="col-lg-4">
+                            <img v-bind:src="cocktail.strDrinkThumb" width="70%" class="img-fluid" alt="Responsive image" />
+                        </div>
+                        <div class="col-lg-8">
+                            <div>
+                                <h4 class="display-4">{{cocktail.strDrink}}</h4>
+                            </div>
+                            <div>
+                                <h4>Ingredients:</h4>
+                                <ol >
+                                    <li>{{cocktail.strIngredient1}}</li>
+                                    <li>{{cocktail.strIngredient2}}</li>
+                                    <li>{{cocktail.strIngredient3}}</li>
+                                    <li>{{cocktail.strIngredient4}}</li>
+                                </ol>
+                                <br/>
+                                <h4>How to:</h4>
+                                {{cocktail.strInstructions}}
+                            </div>
+                            <br/>
+                            <div>
+                                <button @click="searchAgain" class="btn btn-dark">
+                                    Search Again
+                                </button>
+                            </div>      
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="darkbg">
+                <div class="col-lg">
+                    <p>
+                        <h2 >Search History</h2>
+                        <hr color="white"/>
+                    </p>
+                    
+                    <tracker-component v-bind:search-history="searchHistory" v-bind:fetch-cocktail="fetchCocktail"></tracker-component>
+                </div>
+            </div>
+        </div>
+                        
+                 
+
+        <script src="https://unpkg.com/vue@2.6.11/dist/vue.js"></script>
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        <script type="text/javascript" src="app.js"></script>
+    </body>
+</html>
